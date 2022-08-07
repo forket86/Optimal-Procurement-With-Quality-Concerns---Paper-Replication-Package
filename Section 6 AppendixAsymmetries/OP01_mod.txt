@@ -1,0 +1,28 @@
+# vvv 'OP01_mod.txt' vvvvvvvvvvvvvvvvvvvvvvvv
+# 'OPWQC.OPWQC_2S_AsymIndep' 
+# --- Parameters ----
+  param T1 ; # value = 100
+  param T2 ; # value = 101
+  param w_1 {1..T1}; # value = [0.66667, 0.68666, ... , 0.66667]
+  param w_2 {1..T2}; # value = [0.16667, 0.20139, ... , 0.91667]
+  param f_1 {1..T1}; # value = [0.01, 0.01, ... , 0.01]
+  param f_2 {1..T2}; # value = [0.009901, 0.009901, ... , 0.009901]
+# --- Decision variables ----
+  var q_1 {i in 1..T1, j in 1..T2};
+  var q_2 {i in 1..T1, j in 1..T2};
+# --- Objective ----
+  maximize BuyerSurplus:
+  sum {i in 1..T1, j in 1..T2} (w_1[i]*q_1[i,j] + w_2[j]*q_2[i,j])*f_1[i]*f_2[j];
+# --- Constraints ----
+  subject to demand {i in 1..T1,j in 1..T2}:
+      q_1[i,j] + q_2[i,j] <= 1;
+  subject to q_1_EP_Mon {i in 1..T1-1, j in 1..T2}:
+      q_1[i+1,j] - q_1[i,j]  <= 0;
+  subject to q_1_NonNeg {i in 1..T1}:
+       - q_1[T1,i]  <= 0;
+  subject to q_2_EP_Mon {i in 1..T1,j in 1..T2-1}:
+      q_2[i,j+1] - q_2[i,j]  <= 0;
+  subject to q_2_NonNeg {i in 1..T1}:
+       - q_2[i,T2]  <= 0;
+# ^^^ 'OP01_mod.txt' file ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+

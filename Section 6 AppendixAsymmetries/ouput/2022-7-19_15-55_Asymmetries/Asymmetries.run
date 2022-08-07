@@ -1,0 +1,16 @@
+# --- Load .mod and .dat ----
+reset;
+model ..\OP01_mod.txt;
+data ..\DAT_a\01_OP02_dat.txt;
+
+# --- call CPLEX ----
+option solver 'C:\Program Files\IBM\ILOG\CPLEX_Studio201\cplex\bin\x64_win64\cplexamp';
+solve;
+
+# --- Store optimal solution in .txt files --- 
+print{i in 1..T1, j in 1..T2}: q_1[i,j] > q_1_out.txt;
+close q_1_out.txt;
+
+print{i in 1..T1, j in 1..T2}: q_2[i,j] > q_2_out.txt;
+close q_2_out.txt;
+

@@ -1,0 +1,47 @@
+# vvv 'OP03_run.txt' vvvvvvvvvvvvvvv
+# --- Load .mod and .dat ----
+ reset;
+ model OP01_mod.txt;
+ data OP02_dat.txt;
+# --- Write out Numerical LP -----
+ expand >> OP14_numericalOP.txt;
+# --- call CPLEX ----
+ option solver 'C:\Program Files\IBM\ILOG\CPLEX_Studio201\cplex\bin\x64_win64\cplexamp';
+ solve;
+# --- report solver status: unfeasible, unbdd ... ----
+ print solve_result_num > OP10_Status_out.txt;
+ close LP_Status_out.txt;
+# --- Store optimal solution in .txt files --- 
+ print {i in 1..T1, j in 1..T2}: q_1[i,j] > q_1_out.txt;
+ close q_1_out.txt;
+ print {i in 1..T1, j in 1..T2}: q_2[i,j] > q_2_out.txt;
+ close q_2_out.txt;
+ print BuyerSurplus > OP24_LP_Value_out.txt;
+ close OP24_LP_Value_out.txt;
+# --- Solution Report  --- 
+ display _conname, _con.dual, _con.slack >> OP23_slacks_duals.txt;
+ close SOL_REPORT.txt;
+# --- Store slacks in .txt files --- 
+ print {i in 1..T1,j in 1..T2}: demand[i,j].slack > demand_Slacks_out.txt;
+ close demand_Slacks_out.txt;
+ print {i in 1..T1-1, j in 1..T2}: q_1_EP_Mon[i, j].slack > q_1_EP_Mon_Slacks_out.txt;
+ close q_1_EP_Mon_Slacks_out.txt;
+ print {i in 1..T1}: q_1_NonNeg[i].slack > q_1_NonNeg_Slacks_out.txt;
+ close q_1_NonNeg_Slacks_out.txt;
+ print {i in 1..T1,j in 1..T2-1}: q_2_EP_Mon[i,j].slack > q_2_EP_Mon_Slacks_out.txt;
+ close q_2_EP_Mon_Slacks_out.txt;
+ print {i in 1..T1}: q_2_NonNeg[i].slack > q_2_NonNeg_Slacks_out.txt;
+ close q_2_NonNeg_Slacks_out.txt;
+# --- Store duals in .txt files --- 
+ print: {i in 1..T1,j in 1..T2} demand[i,j].dual > demand_Duals_out.txt;
+ close demand_Duals_out.txt;
+ print: {i in 1..T1-1, j in 1..T2} q_1_EP_Mon[i, j].dual > q_1_EP_Mon_Duals_out.txt;
+ close q_1_EP_Mon_Duals_out.txt;
+ print: {i in 1..T1} q_1_NonNeg[i].dual > q_1_NonNeg_Duals_out.txt;
+ close q_1_NonNeg_Duals_out.txt;
+ print: {i in 1..T1,j in 1..T2-1} q_2_EP_Mon[i,j].dual > q_2_EP_Mon_Duals_out.txt;
+ close q_2_EP_Mon_Duals_out.txt;
+ print: {i in 1..T1} q_2_NonNeg[i].dual > q_2_NonNeg_Duals_out.txt;
+ close q_2_NonNeg_Duals_out.txt;
+# ^^^ 'OP03_run.txt' file ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+

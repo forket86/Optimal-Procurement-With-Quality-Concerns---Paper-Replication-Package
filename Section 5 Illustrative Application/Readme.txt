@@ -1,0 +1,12 @@
+0) Software requirements: 
+	i) Matlab
+	ii) AMPL (required only for Figure6.m and Figure7.m)
+	iii) IBM Ilog CPLEX (required only for Figure6.m and Figure7.m)
+
+1) Run Figure3.m to reproduce figure 3
+2) Run PreliminariesAndFigure5Noise.m to reproduce figure 5
+3) Save output as LoblafromDataT100S7.mat
+4) Specify AMPL (amplPath) and CPLEX (cplexPath) installation paths in Figure6.m, Figure7.m
+5) Run Figure6.m, Figure7.m, Figure8.m to reproduce the corresponding figures
+
+NOTE: Nothing else should be modified!
